@@ -128,9 +128,9 @@ function parseValues() {
 function runCalculations() {
     parseValues();
     // Events per year
-    eventsYear = (providersParsed / 3 + providersParsed * 0.15) * (1-(delegatedPercentageParsed/100));
+    eventsYear = (providersParsed / 3 + providersParsed * 0.15) * (1 - (delegatedPercentageParsed / 100));
     // Events per FTE
-    switch(inputCredentialingModel.val()){
+    switch (inputCredentialingModel.val()) {
         case 'inManual':
             eventsFte = 40;
             break;
@@ -144,19 +144,24 @@ function runCalculations() {
     // In-house FTEs
     inhouseFtes = eventsYear / 12 / eventsFte;
     // Minutes per event
-    switch(inputCredentialingModel.val()){
-        case 'inManual':
-            minutesEvent = 79;
-            break;
-        case 'inAutomated':
-            minutesEvent = 39;
-            break;
-        case 'outsourced':
-            minutesEvent = 'N/A';
-            break;
+    if (providersParsed == 0 && delegatedPercentageParsed == 0 && outsourcedEventsPercentParsed == 0) {
+        minutesEvent = 0;
+    }
+    else {
+        switch (inputCredentialingModel.val()) {
+            case 'inManual':
+                minutesEvent = 79;
+                break;
+            case 'inAutomated':
+                minutesEvent = 39;
+                break;
+            case 'outsourced':
+                minutesEvent = 'N/A';
+                break;
+        }
     }
     // Annual Compensation Equivalent Saved
-    switch(inputCredentialingModel.val()){
+    switch (inputCredentialingModel.val()) {
         case 'inManual':
             annualCompensation = (75000 / (52 * 40) * minutesEvent / eventsFte * eventsYear);
             break;
@@ -168,7 +173,7 @@ function runCalculations() {
             break;
     }
     // Savings from Switching Outsourced Credentialing Events to In-House
-    switch(inputCredentialingModel.val()){
+    switch (inputCredentialingModel.val()) {
         case 'inManual':
             outsourcedEventsSavings = 0;
             break;
@@ -176,8 +181,11 @@ function runCalculations() {
             outsourcedEventsSavings = 0;
             break;
         case 'outsourced':
-            outsourcedEventsSavings = (((outsourcedEventsPercentParsed/100)*eventsYear)*(60-(75000*inhouseFtes/eventsYear)));
+            outsourcedEventsSavings = (((outsourcedEventsPercentParsed / 100) * eventsYear) * (60 - (75000 * inhouseFtes / eventsYear)));
             break;
+    }
+    if (isNaN(outsourcedEventsSavings)) {
+        outsourcedEventsSavings = 0;
     }
     displayResults();
 }
