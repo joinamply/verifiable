@@ -138,7 +138,7 @@ function runCalculations() {
             eventsFte = 60;
             break;
         case 'outsourced':
-            eventsFte = 225;
+            eventsFte = 250;
             break;
     }
     // In-house FTEs
@@ -181,7 +181,7 @@ function runCalculations() {
             outsourcedEventsSavings = 0;
             break;
         case 'outsourced':
-            outsourcedEventsSavings = (((outsourcedEventsPercentParsed / 100) * eventsYear) * (60 - (75000 * inhouseFtes / eventsYear)));
+            outsourcedEventsSavings = (((outsourcedEventsPercentParsed / 100) * eventsYear) * (65 - (75000 * inhouseFtes / eventsYear)));
             break;
     }
     if (isNaN(outsourcedEventsSavings)) {
